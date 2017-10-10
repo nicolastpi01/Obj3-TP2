@@ -14,6 +14,7 @@ class Transactor
     transactor_obj = self.new(hash, p)
     begin
       yield(p)
+      #transactor_obj.redo()
       return transactor_obj
 
     rescue
@@ -40,6 +41,11 @@ class Transactor
       persona.instance_variable_set(key, value)
 
     end
+  end
+
+  def redo()
+    # Muy similar a undo
+
   end
 
 
