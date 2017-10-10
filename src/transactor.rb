@@ -1,20 +1,21 @@
 
 class Transactor
-  attr_accessor :hash, :persona
+  attr_accessor :hash_antiguos, :persona, :hash_nuevos
 
   def initialize(hash, p)
     @persona = p
-    @hash = hash
+    @hash_antiguos = hash
+    #@hash_nuevos = None sera necesario?
   end
 
   def self.perform(p)
-    p_instance_var = p.instance_variables
-    hash = self.update_hash(p, p_instance_var)
+    hash = self.update_hash(p)
     #self.update_methods(p, p_instance_var, hash)
     transactor_obj = self.new(hash, p)
     begin
       yield(p)
-      #transactor_obj.redo()
+      #nuevos = self.update_hash(p)
+      #transactor_obj.hash_nuevos = nuevos
       return transactor_obj
 
     rescue
@@ -26,9 +27,10 @@ class Transactor
   end
 
 
-  def self.update_hash(p, list)
+  def self.update_hash(p)
+    p_instance_var = p.instance_variables
     hash = Hash.new()
-    list.each { |a| method_name = a[1..a.length-1]
+    p_instance_var.each { |a| method_name = a[1..a.length-1]
       hash[a] = p.method(method_name).call
     }
       return hash
