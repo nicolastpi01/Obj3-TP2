@@ -32,8 +32,8 @@ describe 'Verifico el comportamiento de las transacciones simples, rollback auto
     expect(@persona.edad).to eq 21
     transaccion.undo() # vuelve al estado anterior
     expect(@persona.edad).to eq 20
-    #transaccion.redo()
-    #expect(@persona.edad).to eq 21     # la re-hizo
+    transaccion.redo()
+    expect(@persona.edad).to eq 21     # la re-hizo
   end
 
 end

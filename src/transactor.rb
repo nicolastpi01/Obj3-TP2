@@ -5,7 +5,7 @@ class Transactor
   def initialize(hash, p)
     @persona = p
     @hash_antiguos = hash
-    #@hash_nuevos = None sera necesario?
+    #@hash_nuevos #sera necesario?
   end
 
   def self.perform(p)
@@ -14,8 +14,8 @@ class Transactor
     transactor_obj = self.new(hash, p)
     begin
       yield(p)
-      #nuevos = self.update_hash(p)
-      #transactor_obj.hash_nuevos = nuevos
+      nuevos = self.update_hash(p)
+      transactor_obj.hash_nuevos = nuevos
       return transactor_obj
 
     rescue
@@ -38,15 +38,19 @@ class Transactor
 
 
   def undo()
-    hash = self.hash
+    hash = self.hash_antiguos
     hash.each do |key, value|
-      persona.instance_variable_set(key, value)
+      self.persona.instance_variable_set(key, value)
 
     end
   end
 
   def redo()
-    # Muy similar a undo
+    hash = self.hash_nuevos
+    hash.each do |key, value|
+      self.persona.instance_variable_set(key, value)
+
+    end
 
   end
 
