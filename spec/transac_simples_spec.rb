@@ -5,7 +5,6 @@ describe 'My behaviour' do
   before :each do
     @persona = Persona.new
     @persona.edad = 20
-    @persona.nombre = 'Raul'
 
   end
 
@@ -13,12 +12,28 @@ describe 'My behaviour' do
 
     @persona.queCumpla(@persona)
     expect(@persona.edad).to eq 21
+    #print(transaccion.hash)
   end
 
   it 'should do something FFFFFFF' do
-    expect { @persona.queExploteAlCumplirAnios(@persona) }.to raise_error('Kabooom!')   ## la exception igual se propaga !
-    expect(@persona.edad).to eq 20      # pero el pobre tipo volvió a tener 20
-    expect(@persona.nombre).to eq 'Raul'
+    expect { @persona.queExploteAlCumplirAnios(@persona) }.to raise_error('Kabooom!')  ## la exception igual se propaga!
+    expect(@persona.edad).to eq 20   # pero el pobre tipo volvió a tener 20
+  end
+
+  it 'should do something GGGGGGGGG' do
+    transaccion = @persona.queCumpla(@persona)
+    expect(@persona.edad).to eq 21
+    transaccion.undo() # vuelve al estado anterior
+    expect(@persona.edad).to eq 20
+  end
+
+  it 'should do something HHHHHHHHH' do
+    transaccion = @persona.queCumpla(@persona)
+    expect(@persona.edad).to eq 21
+    transaccion.undo() # vuelve al estado anterior
+    expect(@persona.edad).to eq 20
+    transaccion.redo()
+    expect(@persona.edad).to eq 21     # la re-hizo
   end
 
 end

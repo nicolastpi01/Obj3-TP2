@@ -2,7 +2,7 @@ class Persona
   attr_accessor :nombre, :edad
 
   def initialize()
-    @nombre = 'pedro'
+    @nombre = ''
     @edad = 0
   end
 
