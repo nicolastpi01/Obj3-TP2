@@ -5,7 +5,6 @@ class Transactor
   def initialize(hash, p)
     @persona = p
     @hash_antiguos = hash
-    #@hash_nuevos #sera necesario?
   end
 
   def self.perform(p)
@@ -38,43 +37,40 @@ class Transactor
 
 
   def undo()
-    hash = self.hash_antiguos
-    hash.each do |key, value|
-      self.persona.instance_variable_set(key, value)
-
-    end
+    self.state_update(self.hash_antiguos)
   end
 
   def redo()
-    hash = self.hash_nuevos
+    self.state_update(self.hash_nuevos)
+  end
+
+  def state_update(hash)
     hash.each do |key, value|
       self.persona.instance_variable_set(key, value)
-
-    end
-
-  end
-
-
-
-
-
-
-
-
-
-
-  def self.update_methods(p, list, hash)
-    p_instance_var = p.instance_variables
-    i = 0
-    num = p_instance_var.length
-    while i < num do
-      original = p_instance_var[i]
-      nuevo = original[1..original.length - 1]
-      p.define_singleton_method(nuevo) do |arg|
-        super(arg)
-      end
-      i+=1
     end
   end
+
+
+
+
+
+
+
+
+
+
+  #def self.update_methods(p, list, hash)
+  #  p_instance_var = p.instance_variables
+  #  i = 0
+  #  num = p_instance_var.length
+  #  while i < num do
+  #    original = p_instance_var[i]
+  #    nuevo = original[1..original.length - 1]
+  #    p.define_singleton_method(nuevo) do |arg|
+  #      super(arg)
+  #    end
+  #    i+=1
+  #  end
+  #end
 
 end
