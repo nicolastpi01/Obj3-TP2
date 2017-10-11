@@ -50,6 +50,23 @@ class Transactor
     end
   end
 
+  def changes()
+    p_instance_var = self.persona.instance_variables
+    list = Array.new()
+    p_instance_var.each { |a| if (self.hash_nuevos[a] != self.hash_antiguos[a])
+                                if (self.hash_antiguos[a] == self.persona.instance_variable_get(a))
+                                  list.push([self.persona.object_id, a, self.hash_nuevos[a], self.persona.instance_variable_get(a)])
+                                else
+                                  if (self.hash_nuevos[a] == self.persona.instance_variable_get(a))
+                                    list.push([self.persona.object_id, a, self.hash_antiguos[a], self.persona.instance_variable_get(a)])
+                                  end
+                                end
+                              end
+    }
+        return list
+
+  end
+
 
 
 
@@ -74,3 +91,5 @@ class Transactor
   #end
 
 end
+
+

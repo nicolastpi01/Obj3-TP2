@@ -27,6 +27,7 @@ describe 'Verifico el comportamiento de las transacciones simples, rollback auto
     expect(@persona.edad).to eq 20
   end
 
+  # realizar mas test de esta función
   it 'Verificamos el redo(), en cualquier momento queremos volver un estado "adelante" luego de una transacción exitosa' do
     transaccion = @persona.queCumpla(@persona)
     expect(@persona.edad).to eq 21
@@ -34,6 +35,20 @@ describe 'Verifico el comportamiento de las transacciones simples, rollback auto
     expect(@persona.edad).to eq 20
     transaccion.redo()
     expect(@persona.edad).to eq 21     # la re-hizo
+  end
+
+  # seguir testeando esto, hay casos que la lista es incorrecta, casos undo(), undo(), y hay estados repetidos
+  it 'Verificamos el changes(), debe mostrar todos los cambios realizados durante la transacción' do
+    transaccion = @persona.queCumpla(@persona)
+    cambios = transaccion.changes()
+    expect(cambios).to eq [[@persona.object_id, :@edad, 20, 21]]
+    transaccion.undo()
+    cambios = transaccion.changes()
+    expect(cambios).to eq [[@persona.object_id, :@edad, 21, 20]]
+    transaccion.redo()
+    cambios = transaccion.changes()
+    expect(cambios).to eq [[@persona.object_id, :@edad, 20, 21]]
+    print(cambios)
   end
 
 end
