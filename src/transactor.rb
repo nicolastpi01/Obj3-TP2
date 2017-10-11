@@ -9,7 +9,7 @@ class Transactor
 
   def self.perform(p)
     hash = self.update_hash(p)
-    #self.update_methods(p, p_instance_var, hash)
+    # self.update_methods(p, p_instance_var, hash)
     transactor_obj = self.new(hash, p)
     begin
       yield(p)
@@ -50,21 +50,28 @@ class Transactor
     end
   end
 
-  #def changes()
-  #  p_instance_var = self.persona.instance_variables
-  #  list = Array.new()
-  #  p_instance_var.each { |a| if (self.hash_nuevos[a] != self.hash_antiguos[a])
-  #                              if (self.hash_antiguos[a] == self.persona.instance_variable_get(a))
-  #                                list.push([self.persona.object_id, a, self.hash_nuevos[a], self.persona.instance_variable_get(a)])
-  #                              else
-  #                                if (self.hash_nuevos[a] == self.persona.instance_variable_get(a))
-  #                                  list.push([self.persona.object_id, a, self.hash_antiguos[a], self.persona.instance_variable_get(a)])
-  #                                end
-  #                              end
-  #                            end
-  #  }
-  #      return list
+  def changes()
+    p_instance_var = self.persona.instance_variables
+    list = Array.new()
+    p_instance_var.each { |a| if (self.hash_nuevos[a] != self.hash_antiguos[a])
+                                if (self.hash_antiguos[a] == self.persona.instance_variable_get(a))
+                                  list.push([self.persona.object_id, a, self.hash_nuevos[a], self.persona.instance_variable_get(a)])
+                                else
+                                  if (self.hash_nuevos[a] == self.persona.instance_variable_get(a))
+                                    list.push([self.persona.object_id, a, self.hash_antiguos[a], self.persona.instance_variable_get(a)])
+                                  end
+                                end
+                              end
+    }
+        return list
 
+  end
+
+
+  #def changes()
+  #  puts "\nHistorial del objeto " + self.object_id.to_s
+  #  puts self.hash_antiguos
+  #  puts self.hash_nuevos
   #end
 
 
