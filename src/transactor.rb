@@ -9,7 +9,7 @@ class Transactor
 
   def self.perform(p)
     hash = self.update_hash(p)
-    #self.update_methods(p, p_instance_var, hash)
+    # self.update_methods(p, p_instance_var, hash)
     transactor_obj = self.new(hash, p)
     begin
       yield(p)
@@ -48,6 +48,13 @@ class Transactor
     hash.each do |key, value|
       self.persona.instance_variable_set(key, value)
     end
+  end
+
+
+  def changes()
+    puts "\nHistorial del objeto " + self.object_id.to_s
+    puts self.hash_antiguos
+    puts self.hash_nuevos
   end
 
 

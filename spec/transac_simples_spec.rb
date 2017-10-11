@@ -4,6 +4,7 @@ describe 'Verifico el comportamiento de las transacciones simples, rollback auto
 
   before :each do
     @persona = Persona.new
+    @persona.nombre = "Pepe"
     @persona.edad = 20
 
   end
@@ -35,5 +36,13 @@ describe 'Verifico el comportamiento de las transacciones simples, rollback auto
     transaccion.redo()
     expect(@persona.edad).to eq 21     # la re-hizo
   end
+
+  it 'verificamos que changes() guarde el historial' do
+    transaccion2 = @persona.queCumpla(@persona)
+    transaccion2.changes()
+    transaccion2 = @persona.queCumpla(@persona)
+    transaccion2.changes()
+  end
+
 
 end
